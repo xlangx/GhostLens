@@ -31,31 +31,64 @@ export const useOverlay = () => {
 
   const loadImage = useCallback((file: File): Promise<void> => {
     return new Promise((resolve, reject) => {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        reject(new Error('Please select an image file'));
+        return;
+      }
+
+      // Check file size (limit to 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        reject(new Error('Image file is too large (max 10MB)'));
+        return;
+      }
+
       const reader = new FileReader();
       const img = new Image();
 
       img.onload = () => {
-        setOverlay(prev => ({
-          ...prev,
-          image: img,
-          x: 0,
-          y: 0,
-          scale: 1,
-          rotation: 0
-        }));
-        resolve();
-      };
-
-      img.onerror = () => reject(new Error('Failed to load image'));
-      
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          img.src = e.target.result as string;
+        try {
+          setOverlay(prev => ({
+            ...prev,
+            image: img,
+            x: 0,
+            y: 0,
+            scale: 1,
+            rotation: 0
+          }));
+          resolve();
+        } catch (error) {
+          reject(new Error('Failed to process image'));
         }
       };
 
-      reader.onerror = () => reject(new Error('Failed to read file'));
-      reader.readAsDataURL(file);
+      img.onerror = (error) => {
+        console.error('Image load error:', error);
+        reject(new Error('Invalid image file or corrupted data'));
+      };
+      
+      reader.onload = (e) => {
+        try {
+          if (e.target?.result) {
+            img.src = e.target.result as string;
+          } else {
+            reject(new Error('Failed to read file data'));
+          }
+        } catch (error) {
+          reject(new Error('Failed to process file data'));
+        }
+      };
+
+      reader.onerror = (error) => {
+        console.error('FileReader error:', error);
+        reject(new Error('Failed to read file'));
+      };
+
+      try {
+        reader.readAsDataURL(file);
+      } catch (error) {
+        reject(new Error('Failed to start reading file'));
+      }
     });
   }, []);
 

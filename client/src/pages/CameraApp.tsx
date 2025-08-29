@@ -11,7 +11,7 @@ import { X, Download } from 'lucide-react';
 
 export default function CameraApp() {
   const [videoElement, setVideoElement] = useState<HTMLVideoElement | null>(null);
-  const { overlay, loadImage } = useOverlay();
+  const { overlay, loadImage, canvasRef } = useOverlay();
   const { isInstallable, installApp, dismissInstallPrompt } = usePWA();
   const { toast } = useToast();
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -52,7 +52,10 @@ export default function CameraApp() {
     }
 
     try {
-      const blob = await capturePhoto(videoRef.current, document.createElement('canvas'));
+      // Get the overlay canvas if it exists
+      const overlayCanvas = canvasRef.current || document.createElement('canvas');
+      
+      const blob = await capturePhoto(videoRef.current, overlayCanvas);
       downloadImage(blob, `historic-recreation-${Date.now()}.jpg`);
       
       toast({

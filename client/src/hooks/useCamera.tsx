@@ -40,11 +40,17 @@ export const useCamera = () => {
     setConfig(currentConfig);
 
     try {
+      // Check if getUserMedia is supported
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('Camera not supported in this browser');
+      }
+
       if (stream) {
         stream.getTracks().forEach(track => track.stop());
       }
 
-      const constraints: MediaStreamConstraints = {
+      // Try with preferred settings first
+      let constraints: MediaStreamConstraints = {
         video: {
           ...resolutionMap[currentConfig.resolution],
           facingMode: currentConfig.facingMode
@@ -52,14 +58,51 @@ export const useCamera = () => {
         audio: false
       };
 
-      const newStream = await navigator.mediaDevices.getUserMedia(constraints);
+      let newStream: MediaStream;
+      
+      try {
+        newStream = await navigator.mediaDevices.getUserMedia(constraints);
+      } catch (firstError) {
+        console.warn('High resolution failed, trying fallback:', firstError);
+        
+        // Fallback to basic constraints
+        constraints = {
+          video: {
+            facingMode: currentConfig.facingMode,
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
+          audio: false
+        };
+        
+        try {
+          newStream = await navigator.mediaDevices.getUserMedia(constraints);
+        } catch (secondError) {
+          console.warn('Facing mode failed, trying any camera:', secondError);
+          
+          // Final fallback - any available camera
+          constraints = {
+            video: true,
+            audio: false
+          };
+          
+          newStream = await navigator.mediaDevices.getUserMedia(constraints);
+        }
+      }
+
       setStream(newStream);
 
       if (videoRef.current) {
         videoRef.current.srcObject = newStream;
+        
+        // Ensure video plays
+        videoRef.current.onloadedmetadata = () => {
+          videoRef.current?.play().catch(console.error);
+        };
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to access camera');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to access camera';
+      setError(errorMessage);
       console.error('Camera error:', err);
     } finally {
       setIsLoading(false);
