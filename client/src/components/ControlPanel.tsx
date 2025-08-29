@@ -224,7 +224,7 @@ export const ControlPanel = ({
 
       {/* Gesture Hints */}
       {isOverlayActive && (
-        <div className="absolute bottom-32 left-4 right-4 z-20 text-center text-xs text-white/70" data-testid="gesture-hints">
+        <div className="absolute bottom-44 left-4 right-4 z-20 text-center text-xs text-white/70" data-testid="gesture-hints">
           <div className="bg-black/30 backdrop-blur-sm rounded-md p-2">
             <div className="flex justify-center space-x-4">
               <span>📱 Drag to move</span>

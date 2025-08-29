@@ -22,17 +22,11 @@ export const capturePhoto = (
         return;
       }
 
-      // Draw video frame first
+      // Only draw video frame - no overlay in the final saved image
       ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
 
-      // Draw overlay if it exists and has content
-      if (overlayCanvas && overlayCanvas.width > 0 && overlayCanvas.height > 0) {
-        try {
-          ctx.drawImage(overlayCanvas, 0, 0, canvas.width, canvas.height);
-        } catch (overlayError) {
-          console.warn('Failed to composite overlay, capturing video only:', overlayError);
-        }
-      }
+      // Note: Overlay is NOT included in the final saved image as requested
+      // The overlay is only for visual guidance during composition
       
       canvas.toBlob((blob) => {
         if (blob) {
