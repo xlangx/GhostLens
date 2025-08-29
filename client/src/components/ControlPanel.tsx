@@ -70,7 +70,7 @@ export const ControlPanel = ({
   return (
     <>
       {/* Top Controls */}
-      <div className="absolute top-0 left-0 right-0 z-30 bg-gradient-to-b from-black/50 to-transparent p-4">
+      <div className="absolute top-0 left-0 right-0 z-30 bg-gradient-to-b from-black/50 to-transparent p-4 pt-8 safe-top">
         <div className="flex items-center justify-between">
           <Button
             variant="ghost"
@@ -94,7 +94,7 @@ export const ControlPanel = ({
       </div>
 
       {/* Bottom Controls */}
-      <div className="absolute bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-black/50 to-transparent p-4">
+      <div className="absolute bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-black/50 to-transparent p-4 pb-8 safe-bottom">
         <div className="flex items-center justify-between">
           
           {/* Upload Button */}
@@ -140,7 +140,7 @@ export const ControlPanel = ({
 
       {/* Side Control Panel */}
       {showControls && isOverlayActive && (
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-background/90 backdrop-blur-sm border border-border rounded-lg p-4 w-64" data-testid="overlay-controls">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-background/90 backdrop-blur-sm border border-border rounded-lg p-4 w-64 safe-left" data-testid="overlay-controls">
           <div className="space-y-4">
             <h3 className="text-sm font-medium text-center">Overlay Controls</h3>
             
@@ -224,7 +224,7 @@ export const ControlPanel = ({
 
       {/* Gesture Hints */}
       {isOverlayActive && (
-        <div className="absolute bottom-20 left-4 right-4 z-20 text-center text-xs text-white/70" data-testid="gesture-hints">
+        <div className="absolute bottom-24 left-4 right-4 z-20 text-center text-xs text-white/70 safe-bottom" data-testid="gesture-hints">
           <div className="bg-black/30 backdrop-blur-sm rounded-md p-2">
             <div className="flex justify-center space-x-4">
               <span>📱 Drag to move</span>

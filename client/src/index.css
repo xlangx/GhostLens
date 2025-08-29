@@ -135,7 +135,7 @@
 
   /* Camera specific styles */
   video {
-    transform: scaleX(-1); /* Mirror front camera */
+    /* Removed mirroring - keep natural camera orientation */
   }
 
   canvas {
