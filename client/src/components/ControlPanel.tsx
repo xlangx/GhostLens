@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useOverlay } from '@/hooks/useOverlay';
 import { 
   Camera, 
   Upload, 
@@ -22,12 +21,32 @@ interface ControlPanelProps {
   onCapture: () => void;
   onFileSelect: (file: File) => void;
   isOverlayActive: boolean;
+  overlay: {
+    image: HTMLImageElement | null;
+    x: number;
+    y: number;
+    scale: number;
+    rotation: number;
+    opacity: number;
+  };
+  updateOpacity: (opacity: number) => void;
+  updateTransform: (transform: { x?: number; y?: number; scale?: number; rotation?: number }) => void;
+  resetOverlay: () => void;
+  removeOverlay: () => void;
 }
 
-export const ControlPanel = ({ onCapture, onFileSelect, isOverlayActive }: ControlPanelProps) => {
+export const ControlPanel = ({ 
+  onCapture, 
+  onFileSelect, 
+  isOverlayActive, 
+  overlay, 
+  updateOpacity, 
+  updateTransform, 
+  resetOverlay, 
+  removeOverlay 
+}: ControlPanelProps) => {
   const [showControls, setShowControls] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const { overlay, updateOpacity, updateTransform, resetOverlay, removeOverlay } = useOverlay();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

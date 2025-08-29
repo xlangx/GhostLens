@@ -11,7 +11,7 @@ import { X, Download } from 'lucide-react';
 
 export default function CameraApp() {
   const [videoElement, setVideoElement] = useState<HTMLVideoElement | null>(null);
-  const { overlay, loadImage, canvasRef } = useOverlay();
+  const { overlay, loadImage, canvasRef, renderOverlay, updateTransform, updateOpacity, resetOverlay, removeOverlay } = useOverlay();
   const { isInstallable, installApp, dismissInstallPrompt } = usePWA();
   const { toast } = useToast();
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -119,6 +119,10 @@ export default function CameraApp() {
       <OverlayCanvas 
         videoElement={videoElement}
         isActive={!!overlay.image}
+        canvasRef={canvasRef}
+        overlay={overlay}
+        renderOverlay={renderOverlay}
+        updateTransform={updateTransform}
       />
 
       {/* Control Panel */}
@@ -126,6 +130,11 @@ export default function CameraApp() {
         onCapture={handleCapture}
         onFileSelect={handleFileSelect}
         isOverlayActive={!!overlay.image}
+        overlay={overlay}
+        updateOpacity={updateOpacity}
+        updateTransform={updateTransform}
+        resetOverlay={resetOverlay}
+        removeOverlay={removeOverlay}
       />
 
       {/* No Overlay State */}

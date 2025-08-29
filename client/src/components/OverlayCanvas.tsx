@@ -1,14 +1,30 @@
 import { useEffect } from 'react';
-import { useOverlay } from '@/hooks/useOverlay';
 import { GestureHandler } from '@/lib/gestureUtils';
 
 interface OverlayCanvasProps {
   videoElement: HTMLVideoElement | null;
   isActive: boolean;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  overlay: {
+    image: HTMLImageElement | null;
+    x: number;
+    y: number;
+    scale: number;
+    rotation: number;
+    opacity: number;
+  };
+  renderOverlay: (videoElement: HTMLVideoElement) => void;
+  updateTransform: (transform: { x?: number; y?: number; scale?: number; rotation?: number }) => void;
 }
 
-export const OverlayCanvas = ({ videoElement, isActive }: OverlayCanvasProps) => {
-  const { canvasRef, overlay, renderOverlay, updateTransform } = useOverlay();
+export const OverlayCanvas = ({ 
+  videoElement, 
+  isActive, 
+  canvasRef, 
+  overlay, 
+  renderOverlay, 
+  updateTransform 
+}: OverlayCanvasProps) => {
 
   useEffect(() => {
     if (!videoElement || !isActive) return;
