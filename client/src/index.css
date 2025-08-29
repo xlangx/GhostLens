@@ -105,7 +105,8 @@
     overscroll-behavior: none;
     position: fixed;
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile */
   }
 
   /* Hide default input styling on iOS */

@@ -94,8 +94,8 @@ export const ControlPanel = ({
       </div>
 
       {/* Bottom Controls */}
-      <div className="absolute bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-black/50 to-transparent p-4 pb-8 safe-bottom">
-        <div className="flex items-center justify-between">
+      <div className="absolute bottom-0 left-0 right-0 z-30 bg-gradient-to-t from-black/50 to-transparent p-4 pb-16">
+        <div className="flex items-center justify-between mb-8">
           
           {/* Upload Button */}
           <div className="relative">
@@ -224,7 +224,7 @@ export const ControlPanel = ({
 
       {/* Gesture Hints */}
       {isOverlayActive && (
-        <div className="absolute bottom-24 left-4 right-4 z-20 text-center text-xs text-white/70 safe-bottom" data-testid="gesture-hints">
+        <div className="absolute bottom-32 left-4 right-4 z-20 text-center text-xs text-white/70" data-testid="gesture-hints">
           <div className="bg-black/30 backdrop-blur-sm rounded-md p-2">
             <div className="flex justify-center space-x-4">
               <span>📱 Drag to move</span>
